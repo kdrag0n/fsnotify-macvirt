@@ -315,6 +315,14 @@ func (w *Watcher) AddWith(name string, opts ...addOpt) error {
 	return err
 }
 
+func (w *Watcher) AddWithEvents(name string, flags uint32) error {
+	w.mu.Lock()
+	w.userWatches[name] = struct{}{}
+	w.mu.Unlock()
+	_, err := w.addWatch(name, flags)
+	return err
+}
+
 // Remove stops monitoring the path for changes.
 //
 // Directories are always removed non-recursively. For example, if you added
